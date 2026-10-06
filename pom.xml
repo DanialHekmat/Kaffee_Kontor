@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.dhbw.prog1</groupId>
+    <artifactId>kaffee-kontor</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Kaffee-Kontor</name>
+    <description>Semesterprojekt Programmierung 1 - Wirtschaftsinformatik DHBW</description>
+
+    <properties>
+        <!-- release 21 = laeuft mit jedem JDK ab Version 21, auch mit 25. -->
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <!-- Quelltext und Testausgaben sind ueberall UTF-8 - egal ob Windows, macOS oder Linux. -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <junit.version>5.11.3</junit.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <compilerArgs>
+                        <!-- Parameternamen bleiben erhalten - bessere Fehlermeldungen fuer Anfaenger. -->
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <!--
+                        Diese drei Einstellungen sorgen dafuer, dass Tests auf JEDEM Rechner
+                        gleich laufen. Ohne sie schlagen Tests je nach Systemsprache
+                        unterschiedlich fehl - der haeufigste Frustpunkt in gemischten Kursen.
+                    -->
+                    <argLine>-Dfile.encoding=UTF-8 -Duser.language=de -Duser.country=DE</argLine>
+                    <!-- Fehlerausgabe im Klartext statt als Stacktrace-Wand. -->
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+            </plugin>
+
+            <!--
+                Startet das Programm ueber:  mvn exec:java
+                Die Encoding-Flags verhindern zerschossene Umlaute in der Windows-Konsole.
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>de.dhbw.prog1.Start</mainClass>
+                    <systemProperties>
+                        <systemProperty>
+                            <key>file.encoding</key>
+                            <value>UTF-8</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <!--
+            Setup-Pruefung:  mvn -P pruefe-setup test
+            Gibt im Klartext aus, ob JDK, Encoding und Sprache stimmen.
+        -->
+        <profile>
+            <id>pruefe-setup</id>
+            <properties>
+                <!--
+                    Die Uebungstests werden hier bewusst uebersprungen. Sonst wuerde die
+                    Setup-Pruefung erst laufen, wenn schon alle Tests gruen sind - also genau
+                    dann nicht, wenn man sie braucht.
+                -->
+                <skipTests>true</skipTests>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.5.0</version>
+                        <executions>
+                            <execution>
+                                <id>setup-check</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <!--
+                                        Der Hinweis <?m2e ignore?> ist fuer Eclipse gedacht.
+                                        Ohne ihn meldet Eclipse "Plugin execution not covered by
+                                        lifecycle mapping" und faerbt die pom.xml rot - obwohl
+                                        das Projekt einwandfrei baeut. Eclipse soll dieses
+                                        Plugin im Editor schlicht ignorieren; auf der
+                                        Kommandozeile und in der IDE-Ausfuehrung laeuft es
+                                        weiterhin normal.
+                                    -->
+                                    <?m2e ignore?>
+                                    <goal>java</goal>
+                                </goals>
+                                <configuration>
+                                    <mainClass>de.dhbw.prog1.kern.SetupPruefung</mainClass>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
