@@ -32,8 +32,8 @@ public class Runde {
      * @return Gesamtkosten des Einkaufs in Cent
      */
     public static int einkaufskosten(int anzahlSaecke, int preisProSackInCent) {
-        // TODO Stufe 1: Anzahl mal Preis.
-        return 0;
+        int x = anzahlSaecke * preisProSackInCent;
+        return x;
     }
 
     /**
@@ -46,8 +46,8 @@ public class Runde {
      * @return Erloes in Cent
      */
     public static int erloes(int verkaufteBecher, int preisProBecherInCent) {
-        // TODO Stufe 1: Anzahl mal Preis.
-        return 0;
+        int e = verkaufteBecher * preisProBecherInCent;
+        return e;
     }
 
 
@@ -67,8 +67,8 @@ public class Runde {
      * @return Anzahl verfuegbarer Becher
      */
     public static int bechervorrat(int anzahlSaecke) {
-        // TODO Stufe 2
-        return 0;
+        int b = Spielregeln.BECHER_PRO_SACK * anzahlSaecke;
+        return b;
     }
 
     /**
@@ -85,8 +85,8 @@ public class Runde {
      * @return tatsaechlich verkaufte Becher
      */
     public static int verkaufteBecher(int bechervorrat, int nachfrage) {
-        // TODO Stufe 2
-        return 0;
+        int s = Math.min(bechervorrat, nachfrage);
+        return s;
     }
 
     /**
@@ -106,8 +106,8 @@ public class Runde {
      * @return Rohstoffkosten je Becher, in Cent, abgerundet
      */
     public static int rohstoffkostenProBecherInCent(int preisProSackInCent) {
-        // TODO Stufe 2
-        return 0;
+        int k = preisProSackInCent / Spielregeln.BECHER_PRO_SACK;
+        return k;
     }
 
     /**
@@ -127,8 +127,8 @@ public class Runde {
      */
     public static int deckungsbeitragProBecherInCent(int verkaufspreisInCent,
                                                      int preisProSackInCent) {
-        // TODO Stufe 2
-        return 0;
+        int db = verkaufspreisInCent - rohstoffkostenProBecherInCent(preisProSackInCent);
+        return db;
     }
 
     /**
@@ -149,8 +149,8 @@ public class Runde {
                                            int einkaufskostenInCent,
                                            int erloesInCent,
                                            int saeckeImLager) {
-        // TODO Stufe 2
-        return 0;
+        int kassenstand = kasseVorherInCent - einkaufskostenInCent + erloesInCent - Spielregeln.FIXKOSTEN_PRO_RUNDE_CENT - (saeckeImLager* Spielregeln.LAGERKOSTEN_PRO_SACK_CENT);
+        return kassenstand;
     }
 
 
@@ -175,7 +175,9 @@ public class Runde {
      * naechste Woche.
      */
     public static void spieleEineRunde() {
-        // TODO Stufe 3 (Kuer)
+        Konsole.frageGanzeZahl("Runde", 1,Spielregeln.ANZAHL_RUNDEN);
+        Konsole.frageGanzeZahl("Anzahl von Saecke", 1, bechervorrat(Spielregeln.ROESTKAPAZITAET_SAECKE_PRO_RUNDE));
+        Konsole.frageGanzeZahl("Anzahl von Saecke", 1, Spielregeln.ROESTKAPAZITAET_SAECKE_PRO_RUNDE);
         Konsole.zeige("Noch nicht gebaut - das ist die Kueraufgabe.");
     }
 
