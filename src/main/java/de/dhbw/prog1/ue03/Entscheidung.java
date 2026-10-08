@@ -37,7 +37,9 @@ public class Entscheidung {
      * @return true, wenn die Roesterei pleite ist
      */
     public static boolean istBankrott(int kasseInCent) {
-        // TODO Stufe 1
+        if(kasseInCent > Spielregeln.BANKROTT_GRENZE_CENT){
+            return true;
+        }
         return false;
     }
 
@@ -58,8 +60,12 @@ public class Entscheidung {
      * @return Bewertung als Text
      */
     public static String bewerteRunde(int gewinnInCent) {
-        // TODO Stufe 1
-        return "";
+        if (gewinnInCent == 0){
+            return "Punktlandung";
+        } else if (gewinnInCent < 0){
+            return "Verlust";
+        }
+        return "Gewinn";
     }
 
 
@@ -85,7 +91,11 @@ public class Entscheidung {
      * @return hoechstmoegliche Anzahl Saecke, niemals negativ
      */
     public static int maximalBezahlbareSaecke(int kasseInCent, int preisProSackInCent) {
-        // TODO Stufe 2
+        if(kasseInCent > preisProSackInCent){
+            return Math.min(kasseInCent/preisProSackInCent,Spielregeln.ROESTKAPAZITAET_SAECKE_PRO_RUNDE);
+        } else if(kasseInCent == preisProSackInCent){
+            return 1;
+        }
         return 0;
     }
 
@@ -111,7 +121,9 @@ public class Entscheidung {
      */
     public static boolean darfEinkaufen(int kasseInCent, int anzahlSaecke,
                                         int preisProSackInCent) {
-        // TODO Stufe 2
+        if(anzahlSaecke >= 1 && anzahlSaecke <= Spielregeln.ROESTKAPAZITAET_SAECKE_PRO_RUNDE && kasseInCent >= anzahlSaecke*preisProSackInCent){
+            return true;
+        }
         return false;
     }
 
@@ -133,8 +145,12 @@ public class Entscheidung {
      * @return Beschreibung der Nachfragelage
      */
     public static String beschreibeSaison(int saisonProzent) {
-        // TODO Stufe 2
-        return "";
+        if(saisonProzent >= 110){
+            return "Hochsaison";
+        } else if(saisonProzent >= 95 && saisonProzent <110) {
+            return "Normal";
+        }
+        return "Flaute";
     }
 
     /**
@@ -167,8 +183,13 @@ public class Entscheidung {
      * @return Name der Aktion
      */
     public static String menueAktion(int wahl) {
-        // TODO Stufe 2
-        return "";
+        switch (wahl) {
+            case 1 -> {return "Einkaufen";}
+            case 2 -> {return "Preis festlegen";}
+            case 3 -> {return "Bericht anzeigen";}
+            case 0 -> {return "Beenden";}
+            default -> {return "Unbekannt";}
+        }
     }
 
     /**
@@ -192,7 +213,10 @@ public class Entscheidung {
      * @return true bei Zustimmung
      */
     public static boolean istBestaetigung(String eingabe) {
-        // TODO Stufe 2
+        String eingabeTrimmed = eingabe.trim();
+        if(eingabeTrimmed.equalsIgnoreCase("j") || eingabeTrimmed.equalsIgnoreCase("ja")){
+            return true;
+        }
         return false;
     }
 
