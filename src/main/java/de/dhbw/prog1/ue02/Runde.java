@@ -175,9 +175,22 @@ public class Runde {
      * naechste Woche.
      */
     public static void spieleEineRunde() {
-        Konsole.frageGanzeZahl("Runde", 1,Spielregeln.ANZAHL_RUNDEN);
-        Konsole.frageGanzeZahl("Anzahl von Saecke", 1, bechervorrat(Spielregeln.ROESTKAPAZITAET_SAECKE_PRO_RUNDE));
+        /*Konsole.frageGanzeZahl("Runde", 1,Spielregeln.ANZAHL_RUNDEN);
         Konsole.frageGanzeZahl("Anzahl von Saecke", 1, Spielregeln.ROESTKAPAZITAET_SAECKE_PRO_RUNDE);
+        int vP = Konsole.frageBetragInCent("Verkaufspreis");
+
+        int aktuelleRunde = 1;
+
+        int preisProSack = Markt.preisProSackInCent(aktuelleRunde);
+        int nachfrage = Markt.nachfrageInBechern(aktuelleRunde, vP);
+
+        System.out.println(preisProSack);
+        System.out.println(nachfrage);
+
+        aktuelleRunde++;
+
+        System.out.println(aktuelleRunde);*/
+
         Konsole.zeige("Noch nicht gebaut - das ist die Kueraufgabe.");
     }
 
