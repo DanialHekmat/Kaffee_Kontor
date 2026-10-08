@@ -42,8 +42,15 @@ public class Schleifen {
      * @return Summe der Sackpreise in Cent
      */
     public static int summeMarktpreise(int vonRunde, int bisRunde) {
-        // TODO Stufe 1
-        return 0;
+        int summe = 0;
+        int runde = vonRunde;
+        while (runde <= bisRunde){
+            //System.out.println(runde);
+            summe = summe + Markt.preisProSackInCent(runde);
+            //System.out.println(summe);
+            runde++;
+        }
+        return summe;
     }
 
     /**
