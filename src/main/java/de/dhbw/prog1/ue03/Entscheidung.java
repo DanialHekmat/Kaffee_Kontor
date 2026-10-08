@@ -37,7 +37,7 @@ public class Entscheidung {
      * @return true, wenn die Roesterei pleite ist
      */
     public static boolean istBankrott(int kasseInCent) {
-        if(kasseInCent > Spielregeln.BANKROTT_GRENZE_CENT){
+        if(kasseInCent < Spielregeln.BANKROTT_GRENZE_CENT){
             return true;
         }
         return false;
