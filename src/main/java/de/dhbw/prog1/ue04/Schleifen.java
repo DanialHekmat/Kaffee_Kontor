@@ -66,8 +66,16 @@ public class Schleifen {
      * @return niedrigster Sackpreis im Bereich, in Cent
      */
     public static int guenstigsterSackpreis(int vonRunde, int bisRunde) {
-        // TODO Stufe 1
-        return 0;
+        int guenstigster = Markt.preisProSackInCent(vonRunde);
+        int runde = vonRunde;
+        while (runde <= bisRunde) {
+            int preis = Markt.preisProSackInCent(runde);
+            if (preis < guenstigster) {
+                guenstigster = preis;
+            }
+            runde++;
+        }
+        return guenstigster;
     }
 
 
