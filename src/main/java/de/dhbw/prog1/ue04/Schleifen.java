@@ -1,5 +1,6 @@
 package de.dhbw.prog1.ue04;
 
+import de.dhbw.prog1.kern.Geld;
 import de.dhbw.prog1.kern.Konsole;
 import de.dhbw.prog1.kern.Markt;
 import de.dhbw.prog1.kern.Spielregeln;
@@ -97,8 +98,18 @@ public class Schleifen {
      * @return Nummer der guenstigsten Runde
      */
     public static int guenstigsteRunde(int vonRunde, int bisRunde) {
-        // TODO Stufe 2
-        return 0;
+        int guenstigsterPreis = Markt.preisProSackInCent(vonRunde);
+        int guenstigsteRunde = vonRunde;
+        int runde = vonRunde;
+        while (runde <= bisRunde) {
+            int preis = Markt.preisProSackInCent(runde);
+            if (preis < guenstigsterPreis) {
+                guenstigsterPreis = preis;
+                guenstigsteRunde = runde;
+            }
+            runde++;
+        }
+        return guenstigsteRunde;
     }
 
     /**
@@ -123,8 +134,15 @@ public class Schleifen {
      */
     public static int rundenBisPreisvorteilAufgezehrt(int guenstigerPreisInCent,
                                                       int teurerPreisInCent) {
-        // TODO Stufe 2
-        return 0;
+        int vorteil = teurerPreisInCent - guenstigerPreisInCent;
+        if (vorteil <= 0) {
+            return 0;
+        }
+        int runden = 0;
+        while (runden * Spielregeln.LAGERKOSTEN_PRO_SACK_CENT < vorteil) {
+            runden++;
+        }
+        return runden;
     }
 
     /**
@@ -156,8 +174,20 @@ public class Schleifen {
      * @return Veraenderung des Kassenstands in Cent
      */
     public static int rundenergebnis(int runde, int verkaufspreisInCent, int kasseInCent) {
-        // TODO Stufe 2
-        return 0;
+        int preisProSack = Markt.preisProSackInCent(runde);
+        int nachfrage = Markt.nachfrageInBechern(runde, verkaufspreisInCent);
+
+        int benoetigteSaecke = (nachfrage + Spielregeln.BECHER_PRO_SACK - 1)
+                / Spielregeln.BECHER_PRO_SACK;
+        int saecke = Math.min(benoetigteSaecke,
+                Entscheidung.maximalBezahlbareSaecke(kasseInCent, preisProSack));
+
+        int kosten = Runde.einkaufskosten(saecke, preisProSack);
+        int verkauft = Runde.verkaufteBecher(Runde.bechervorrat(saecke), nachfrage);
+        int erloes = Runde.erloes(verkauft, verkaufspreisInCent);
+
+        int kasseNachher = Runde.kassenstandNachRunde(kasseInCent, kosten, erloes, 0);
+        return kasseNachher - kasseInCent;
     }
 
     /**
@@ -179,8 +209,16 @@ public class Schleifen {
      * @return bester Verkaufspreis in Cent
      */
     public static int besterVerkaufspreis(int runde, int kasseInCent) {
-        // TODO Stufe 2
-        return 0;
+        int besterPreis = 100;
+        int bestesErgebnis = rundenergebnis(runde, besterPreis, kasseInCent);
+        for (int preis = 110; preis <= 500; preis += 10) {
+            int ergebnis = rundenergebnis(runde, preis, kasseInCent);
+            if (ergebnis > bestesErgebnis) {
+                bestesErgebnis = ergebnis;
+                besterPreis = preis;
+            }
+        }
+        return besterPreis;
     }
 
     /**
@@ -195,8 +233,14 @@ public class Schleifen {
      * @return Kassenstand am Spielende, in Cent
      */
     public static int spieleGanzesSpiel(int verkaufspreisInCent) {
-        // TODO Stufe 2
-        return 0;
+        int kasse = Spielregeln.STARTKAPITAL_CENT;
+        for (int runde = 1; runde <= Spielregeln.ANZAHL_RUNDEN; runde++) {
+            kasse = kasse + rundenergebnis(runde, verkaufspreisInCent, kasse);
+            if (Entscheidung.istBankrott(kasse)) {
+                break;
+            }
+        }
+        return kasse;
     }
 
 
@@ -225,11 +269,13 @@ public class Schleifen {
      * Namen und tritt gegen die der anderen an.
      */
     public static void vergleicheStrategien() {
-        // TODO Stufe 3 (Kuer)
-        Konsole.zeige("Noch nicht gebaut - das ist die Kueraufgabe.");
-    }
+        // Bester fester Preis: alle Preise durchprobieren, jeweils ueber das ganze Spiel
 
-    public static void main(String[] args) {
-        vergleicheStrategien();
+            // TODO Stufe 3 (Kuer)
+            Konsole.zeige("Noch nicht gebaut - das ist die Kueraufgabe.");
+        }
+
+        public static void main(String[] args) {
+            vergleicheStrategien();
     }
 }
