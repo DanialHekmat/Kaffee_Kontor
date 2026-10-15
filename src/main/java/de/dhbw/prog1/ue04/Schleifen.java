@@ -100,7 +100,7 @@ public class Schleifen {
     public static int guenstigsteRunde(int vonRunde, int bisRunde) {
         int guenstigsterPreis = Markt.preisProSackInCent(vonRunde);
         int guenstigsteRunde = vonRunde;
-        int runde = vonRunde;
+        int runde = vonRunde + 1;
         while (runde <= bisRunde) {
             int preis = Markt.preisProSackInCent(runde);
             if (preis < guenstigsterPreis) {
@@ -138,11 +138,11 @@ public class Schleifen {
         if (vorteil <= 0) {
             return 0;
         }
-        int runden = 0;
-        while (runden * Spielregeln.LAGERKOSTEN_PRO_SACK_CENT < vorteil) {
-            runden++;
+        int runde = 0;
+        while (runde * Spielregeln.LAGERKOSTEN_PRO_SACK_CENT < vorteil) {
+            runde++;
         }
-        return runden;
+        return runde;
     }
 
     /**
@@ -177,10 +177,8 @@ public class Schleifen {
         int preisProSack = Markt.preisProSackInCent(runde);
         int nachfrage = Markt.nachfrageInBechern(runde, verkaufspreisInCent);
 
-        int benoetigteSaecke = (nachfrage + Spielregeln.BECHER_PRO_SACK - 1)
-                / Spielregeln.BECHER_PRO_SACK;
-        int saecke = Math.min(benoetigteSaecke,
-                Entscheidung.maximalBezahlbareSaecke(kasseInCent, preisProSack));
+        int benoetigteSaecke = (nachfrage + Spielregeln.BECHER_PRO_SACK - 1) / Spielregeln.BECHER_PRO_SACK;
+        int saecke = Math.min(benoetigteSaecke, Entscheidung.maximalBezahlbareSaecke(kasseInCent, preisProSack));
 
         int kosten = Runde.einkaufskosten(saecke, preisProSack);
         int verkauft = Runde.verkaufteBecher(Runde.bechervorrat(saecke), nachfrage);
