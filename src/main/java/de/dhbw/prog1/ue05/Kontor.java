@@ -5,6 +5,8 @@ import de.dhbw.prog1.kern.Konsole;
 import de.dhbw.prog1.kern.Markt;
 import de.dhbw.prog1.kern.Spielregeln;
 
+import javax.swing.text.html.HTMLDocument;
+
 /**
  * Uebung 5 - Methoden.
  *
@@ -45,8 +47,9 @@ public class Kontor {
      * @return benoetigte Anzahl Saecke, aufgerundet
      */
     public static int saeckeFuerNachfrage(int nachfrage) {
-        // TODO Stufe 1
-        return 0;
+        int saeckeFuerNachfrage = (nachfrage + (Spielregeln.BECHER_PRO_SACK - 1)) / Spielregeln.BECHER_PRO_SACK;
+
+        return saeckeFuerNachfrage;
     }
 
     /**
@@ -75,8 +78,7 @@ public class Kontor {
      */
     public static String berichtszeile(int runde, int preisInCent,
                                        int ergebnisInCent, int kasseInCent) {
-        // TODO Stufe 1
-        return "";
+        return "Runde " + runde + " | Preis " + Geld.formatiere(preisInCent) + " | Ergebnis " + Geld.formatiere(ergebnisInCent) + " | Kasse " + Geld.formatiere(kasseInCent);
     }
 
 
