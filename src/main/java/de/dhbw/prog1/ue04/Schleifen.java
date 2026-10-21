@@ -209,7 +209,7 @@ public class Schleifen {
     public static int besterVerkaufspreis(int runde, int kasseInCent) {
         int besterPreis = 100;
         int bestesErgebnis = rundenergebnis(runde, besterPreis, kasseInCent);
-        for (int preis = 110; preis <= 500; preis += 10) {
+        for (int preis = 100; preis <= 500; preis += 10) {
             int ergebnis = rundenergebnis(runde, preis, kasseInCent);
             if (ergebnis > bestesErgebnis) {
                 bestesErgebnis = ergebnis;
