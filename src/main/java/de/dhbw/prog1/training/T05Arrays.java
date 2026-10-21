@@ -95,8 +95,6 @@ public class T05Arrays {
         if (werte == null) {
             return true;
         }
-        // Ab 1, damit es immer einen linken Nachbarn gibt - und bis length, damit das letzte
-        // Paar mitgeprueft wird.
         for (int i = 1; i < werte.length; i++) {
             if (werte[i - 1] > werte[i]) {
                 return false;
