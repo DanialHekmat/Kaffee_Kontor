@@ -11,8 +11,14 @@ public class T05Arrays {
 
     /** Summe aller Werte. Leer ergibt 0. */
     public static int summe(int[] werte) {
-        // TODO
-        return 0;
+        if (werte == null) {
+            return 0;
+        }
+        int summe = 0;
+        for (int wert : werte) {
+            summe += wert;
+        }
+        return summe;
     }
 
     /**
@@ -21,38 +27,82 @@ public class T05Arrays {
      * <p>Achtung: Auch wenn alle Werte negativ sind, muss der groesste herauskommen.
      */
     public static int maximum(int[] werte) {
-        // TODO
-        return 0;
+        if (werte == null || werte.length == 0) {
+            return 0;
+        }
+        int max = werte[0];
+        for (int wert : werte) {
+            if (wert > max) {
+                max = wert;
+            }
+        }
+        return max;
     }
 
     /** Position des ersten Vorkommens, oder -1 wenn nicht enthalten. */
     public static int indexVon(int[] werte, int gesucht) {
-        // TODO
-        return 0;
+        if (werte == null) {
+            return -1;
+        }
+        for (int i = 0; i < werte.length; i++) {
+            if (werte[i] == gesucht) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /** Wie viele Werte sind echt groesser als die Grenze? */
     public static int anzahlGroesserAls(int[] werte, int grenze) {
-        // TODO
-        return 0;
+        if (werte == null) {
+            return 0;
+        }
+        int anzahl = 0;
+        for (int wert : werte) {
+            if (wert > grenze) {
+                anzahl++;
+            }
+        }
+        return anzahl;
     }
 
     /** Neues Array mit allen Werten verdoppelt. Das Original bleibt unveraendert. */
     public static int[] verdoppelt(int[] werte) {
-        // TODO
-        return new int[0];
+        if (werte == null) {
+            return new int[0];
+        }
+        int[] ergebnis = new int[werte.length];
+        for (int i = 0; i < werte.length; i++) {
+            ergebnis[i] = werte[i] * 2;
+        }
+        return ergebnis;
     }
 
     /** Neues Array in umgekehrter Reihenfolge. Das Original bleibt unveraendert. */
     public static int[] umgekehrt(int[] werte) {
-        // TODO
-        return new int[0];
+        if (werte == null) {
+            return new int[0];
+        }
+        int[] ergebnis = new int[werte.length];
+        for (int i = 0; i < werte.length; i++) {
+            ergebnis[i] = werte[werte.length - 1 - i];
+        }
+        return ergebnis;
     }
 
     /** Ist das Array aufsteigend sortiert? Gleiche Nachbarn sind erlaubt. Leer gilt als sortiert. */
     public static boolean istSortiert(int[] werte) {
-        // TODO
-        return false;
+        if (werte == null) {
+            return true;
+        }
+        // Ab 1, damit es immer einen linken Nachbarn gibt - und bis length, damit das letzte
+        // Paar mitgeprueft wird.
+        for (int i = 1; i < werte.length; i++) {
+            if (werte[i - 1] > werte[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -62,16 +112,29 @@ public class T05Arrays {
      * leeres Array.
      */
     public static int[] ersteN(int[] werte, int n) {
-        // TODO
-        return new int[0];
+        if (werte == null || n <= 0) {
+            return new int[0];
+        }
+        int laenge = Math.min(n, werte.length);
+        int[] ergebnis = new int[laenge];
+        for (int i = 0; i < laenge; i++) {
+            ergebnis[i] = werte[i];
+        }
+        return ergebnis;
     }
 
     /**
      * Summe der Hauptdiagonale einer quadratischen Matrix: {@code matrix[0][0] + matrix[1][1] + ...}
      */
     public static int summeDiagonale(int[][] matrix) {
-        // TODO
-        return 0;
+        if (matrix == null) {
+            return 0;
+        }
+        int summe = 0;
+        for (int i = 0; i < matrix.length; i++) {
+            summe += matrix[i][i];
+        }
+        return summe;
     }
 
     // =================================================================================
@@ -80,32 +143,56 @@ public class T05Arrays {
 
     /** Der kleinste Wert. Leer ergibt 0. */
     public static int minimum(int[] werte) {
-        // TODO
-        return 0;
+        if (werte == null || werte.length == 0) {
+            return 0;
+        }
+        int min = werte[0];
+        for (int wert : werte) {
+            if (wert < min) {
+                min = wert;
+            }
+        }
+        return min;
     }
 
     /** Der Durchschnitt mit Nachkommastellen. Leer ergibt 0.0. */
     public static double durchschnitt(int[] werte) {
-        // TODO
-        return 0.0;
+        if (werte == null || werte.length == 0) {
+            return 0.0;
+        }
+        return (double) summe(werte) / werte.length;
     }
 
     /** Wie oft kommt der gesuchte Wert vor? */
     public static int anzahlVorkommen(int[] werte, int gesucht) {
-        // TODO
-        return 0;
+        if (werte == null) {
+            return 0;
+        }
+        int anzahl = 0;
+        for (int wert : werte) {
+            if (wert == gesucht) {
+                anzahl++;
+            }
+        }
+        return anzahl;
     }
 
     /** Ist der Wert enthalten? */
     public static boolean enthaelt(int[] werte, int gesucht) {
-        // TODO
-        return false;
+        return indexVon(werte, gesucht) != -1;
     }
 
     /** Position des letzten Vorkommens, oder -1. Tipp: Laufe von hinten nach vorn. */
     public static int letzterIndexVon(int[] werte, int gesucht) {
-        // TODO
-        return 0;
+        if (werte == null) {
+            return -1;
+        }
+        for (int i = werte.length - 1; i >= 0; i--) {
+            if (werte[i] == gesucht) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -113,8 +200,20 @@ public class T05Arrays {
      * Weniger als zwei Werte ergeben 0.
      */
     public static int zweitgroesster(int[] werte) {
-        // TODO
-        return 0;
+        if (werte == null || werte.length < 2) {
+            return 0;
+        }
+        int groesster = Math.max(werte[0], werte[1]);
+        int zweiter = Math.min(werte[0], werte[1]);
+        for (int i = 2; i < werte.length; i++) {
+            if (werte[i] > groesster) {
+                zweiter = groesster;
+                groesster = werte[i];
+            } else if (werte[i] > zweiter) {
+                zweiter = werte[i];
+            }
+        }
+        return zweiter;
     }
 
     /**
@@ -122,7 +221,9 @@ public class T05Arrays {
      * sie veraendert das Array selbst. Die Positionen sind immer gueltig.
      */
     public static void vertausche(int[] werte, int i, int j) {
-        // TODO
+        int merker = werte[i];
+        werte[i] = werte[j];
+        werte[j] = merker;
     }
 
     /**
@@ -130,8 +231,14 @@ public class T05Arrays {
      * lang, zaehlt das kuerzere. {1, 2, 3} und {10, 20} ergeben {11, 22}.
      */
     public static int[] addiere(int[] a, int[] b) {
-        // TODO
-        return new int[0];
+        if (a == null || b == null) {
+            return new int[0];
+        }
+        int[] ergebnis = new int[Math.min(a.length, b.length)];
+        for (int i = 0; i < ergebnis.length; i++) {
+            ergebnis[i] = a[i] + b[i];
+        }
+        return ergebnis;
     }
 
     /**
@@ -139,19 +246,50 @@ public class T05Arrays {
      * Reihenfolge. Tipp: Erst zaehlen, dann ein Array passender Groesse anlegen.
      */
     public static int[] nurPositive(int[] werte) {
-        // TODO
-        return new int[0];
+        int[] ergebnis = new int[anzahlGroesserAls(werte, 0)];
+        if (werte == null) {
+            return ergebnis;
+        }
+        int naechste = 0;
+        for (int wert : werte) {
+            if (wert > 0) {
+                ergebnis[naechste] = wert;
+                naechste++;
+            }
+        }
+        return ergebnis;
     }
 
     /** Die Summe jeder Zeile einer Matrix, als neues Array. Zeilen duerfen unterschiedlich lang sein. */
     public static int[] zeilensummen(int[][] matrix) {
-        // TODO
-        return new int[0];
+        if (matrix == null) {
+            return new int[0];
+        }
+        int[] ergebnis = new int[matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            ergebnis[i] = summe(matrix[i]);
+        }
+        return ergebnis;
     }
 
     /** Der groesste Wert einer Matrix. Leer oder {@code null} ergibt 0. */
     public static int maximumInMatrix(int[][] matrix) {
-        // TODO
-        return 0;
+        if (matrix == null) {
+            return 0;
+        }
+        boolean gefunden = false;
+        int max = 0;
+        for (int[] zeile : matrix) {
+            if (zeile == null) {
+                continue;
+            }
+            for (int wert : zeile) {
+                if (!gefunden || wert > max) {
+                    max = wert;
+                    gefunden = true;
+                }
+            }
+        }
+        return max;
     }
 }
