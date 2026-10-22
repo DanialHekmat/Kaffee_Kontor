@@ -53,8 +53,11 @@ public class Historie {
      * @return Array mit den Sackpreisen in Cent
      */
     public static int[] preishistorie(int vonRunde, int bisRunde) {
-        // TODO Stufe 1
-        return new int[0];
+        int[] preise = new int[bisRunde - vonRunde + 1];
+        for (int i = 0; i < preise.length; i++) {
+            preise[i] = Markt.preisProSackInCent(vonRunde + i);
+        }
+        return preise;
     }
 
     /**
@@ -80,8 +83,11 @@ public class Historie {
      * @return Summe aller Werte
      */
     public static int summe(int[] werte) {
-        // TODO Stufe 1
-        return 0;
+        int summe = 0;
+        for (int wert : werte) {
+            summe += wert;
+        }
+        return summe;
     }
 
 
@@ -107,8 +113,16 @@ public class Historie {
      * @return Position des niedrigsten Preises, oder -1 bei leerem Array
      */
     public static int guenstigsterIndex(int[] preise) {
-        // TODO Stufe 2
-        return 0;
+        if (preise.length == 0) {
+            return -1;
+        }
+        int besterIndex = 0;
+        for (int i = 1; i < preise.length; i++) {
+            if (preise[i] < preise[besterIndex]) {
+                besterIndex = i;
+            }
+        }
+        return besterIndex;
     }
 
     /**
@@ -127,8 +141,10 @@ public class Historie {
      * @return Durchschnitt, abgerundet, oder 0 bei leerem Array
      */
     public static int durchschnitt(int[] werte) {
-        // TODO Stufe 2
-        return 0;
+        if (werte.length == 0) {
+            return 0;
+        }
+        return summe(werte) / werte.length;
     }
 
     /**
@@ -147,8 +163,11 @@ public class Historie {
      * @return Array mit den Ergebnissen, gleiche Laenge wie {@code preiseInCent}
      */
     public static int[] ergebnisseFuerPreise(int runde, int[] preiseInCent, int kasseInCent) {
-        // TODO Stufe 2
-        return new int[0];
+        int[] ergebnisse = new int[preiseInCent.length];
+        for (int i = 0; i < preiseInCent.length; i++) {
+            ergebnisse[i] = Kalkulation.rundenergebnis(runde, preiseInCent[i], kasseInCent);
+        }
+        return ergebnisse;
     }
 
     /**
@@ -191,8 +210,15 @@ public class Historie {
      */
     public static int[][] ergebnisTabelle(int[] preiseInCent, int vonRunde, int bisRunde,
                                           int kasseInCent) {
-        // TODO Stufe 2
-        return new int[0][0];
+        int anzahlRunden = bisRunde - vonRunde + 1;
+        int[][] tabelle = new int[preiseInCent.length][anzahlRunden];
+        for (int p = 0; p < preiseInCent.length; p++) {
+            for (int r = 0; r < anzahlRunden; r++) {
+                tabelle[p][r] = Kalkulation.rundenergebnis(vonRunde + r, preiseInCent[p],
+                        kasseInCent);
+            }
+        }
+        return tabelle;
     }
 
 
@@ -230,8 +256,23 @@ public class Historie {
      */
     public static String tabelleAlsText(int[] preiseInCent, int vonRunde, int bisRunde,
                                         int kasseInCent) {
-        // TODO Stufe 3 (Kuer)
-        return "";
+        int[][] tabelle = ergebnisTabelle(preiseInCent, vonRunde, bisRunde, kasseInCent);
+        StringBuilder text = new StringBuilder();
+
+        text.append(String.format("%-12s", "Preis"));
+        for (int runde = vonRunde; runde <= bisRunde; runde++) {
+            text.append(String.format("%14s", "Runde " + runde));
+        }
+        text.append(String.format("%n"));
+
+        for (int p = 0; p < tabelle.length; p++) {
+            text.append(String.format("%-12s", Geld.formatiere(preiseInCent[p])));
+            for (int r = 0; r < tabelle[p].length; r++) {
+                text.append(String.format("%14s", Geld.formatiere(tabelle[p][r])));
+            }
+            text.append(String.format("%n"));
+        }
+        return text.toString();
     }
 
     public static void main(String[] args) {
